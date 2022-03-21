@@ -11,20 +11,55 @@
 
 */
 
-grid = document.getElementById("grid");
+let grid = document.getElementById("grid");
+let difficulty = document.getElementById("difficulty");
+let play = document.getElementById("play");
+let cellNumber;
 
-// generazione delle celle
-for (let i = 1; i <= 100; i++) {
-    const box = document.createElement('div');
-    box.classList.add("box");
-    box.innerHTML = i;
-    grid.appendChild(box);
+play.addEventListener('click',
+    function() {
+        // reset iniziale delle celle
+        grid.innerHTML = "";
 
-    box.addEventListener('click', 
-        function () {
-            // debug
-            console.log(this);
-            this.classList.add('clicked');
+        // selezione del numero di celle in base alla difficoltà
+        switch (difficulty.value) {
+            case 'easy':
+                cellNumber = 100;
+                break;
+            case 'normal':
+                cellNumber = 81;
+                break;
+            case 'hard' :
+                cellNumber = 49;
+                break;
         }
-    );
-}
+
+        // generazione delle celle
+        for (let i = 1; i <= cellNumber; i++) {
+            const box = document.createElement('div');
+
+            // scelta della dimensione delle celle in base al numero totale
+            switch (difficulty.value) {
+                case 'easy':
+                    box.style.width = box.style.height = 'calc(100% / var(--column-easy))';
+                    break;
+                case 'normal':
+                    box.style.width = box.style.height = 'calc(100% / var(--column-normal))';
+                    break;
+                case 'hard' :
+                    box.style.width = box.style.height = 'calc(100% / var(--column-hard))';
+                    break;
+            }
+
+            box.classList.add("box");
+            box.innerHTML = i;
+            grid.appendChild(box);
+
+            box.addEventListener('click', 
+                function () {
+                    this.classList.add('clicked');
+                }
+            );
+        }
+    }
+);
